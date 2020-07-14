@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json"
+	"github.com/Qihoo360/doraemon/cmd/alert-gateway/logs"
 	"io/ioutil"
 	"strings"
 	"time"
@@ -74,7 +75,13 @@ func SendAlertsFor(VUG *common.ValidUserGroup) []string {
 		date := time.Now().Format("2006-1-2")
 		idList := strings.Split(VUG.DutyGroup, ",")
 		for _, id := range idList {
-			res, _ := common.HttpGet(beego.AppConfig.String("DutyGroupUrl"), map[string]string{"teamId": id, "day": date}, nil)
+			url := beego.AppConfig.String("DutyGroupUrl")
+			parms := map[string]string{"teamId": id, "day": date}
+			res, err := common.HttpGet(beego.AppConfig.String("DutyGroupUrl"), map[string]string{"teamId": id, "day": date}, nil)
+			if err != nil {
+				logs.Originloger.Error(err.Error(), url, parms)
+				return []string{}
+			}
 			info := HttpRes{}
 			jsonDataFromHttp, _ := ioutil.ReadAll(res.Body)
 			json.Unmarshal(jsonDataFromHttp, &info)

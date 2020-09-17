@@ -7,7 +7,7 @@ export const brandName = 'React' // slogan
 // let _port = '16028'
 // let _baseURL = `${_serverIp}:${_port}`
 let _mockURL = 'http://localhost:1111/'
-const _serverIp = 'http://localhost'
+const _serverIp = 'http://172.16.25.208'
 let _port = '8080'
 // dev
 // let _baseURL = 'http://10.213.116.29:8080/'

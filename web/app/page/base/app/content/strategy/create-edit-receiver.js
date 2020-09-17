@@ -256,7 +256,8 @@ export default class CreateEditReceiver extends Component {
               ],
             })(<Select onChange={this.selectMethod}>
               <Option value="LANXIN">LANXIN</Option>
-              <Option value="CALL">CALL</Option>
+                <Option value="WeChat">WeChat</Option>
+                <Option value="CALL">CALL</Option>
               <Option value="SMS">SMS</Option>
               <Option value="HOOK">HOOK</Option>
             </Select>)}

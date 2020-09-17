@@ -2,9 +2,11 @@ package initial
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Qihoo360/doraemon/cmd/alert-gateway/common"
 	"github.com/Qihoo360/doraemon/cmd/alert-gateway/logs"
 	"github.com/astaxie/beego"
+	"io/ioutil"
 	"runtime"
 	"strconv"
 	"strings"
@@ -23,6 +25,8 @@ func Sender(SendClass map[string][]common.Ready2Send, now string) {
 			go SendAll(k, "StreeAlert", map[string]string{"key": "6E358A78-0A5B-49D2-A12F-6A4EB07A9671"}, v, now)
 			//logs.Alertloger.Info("[%s]%v:", now, v)
 		case common.AlertMethodCall:
+			go SendAll(k, "StreeAlert", map[string]string{"key": "6E358A78-0A5B-49D2-A12F-6A4EB07A9671"}, v, now)
+		case common.AlterMethodEWechat:
 			go SendAll(k, "StreeAlert", map[string]string{"key": "6E358A78-0A5B-49D2-A12F-6A4EB07A9671"}, v, now)
 		default:
 			go Send2Hook(v, now, "alert", k[5:])
@@ -58,6 +62,7 @@ func SendAll(method string, from string, param map[string]string, content []comm
 			logs.Panic.Error("Panic in SendAll:%v\n%s", e, buf)
 		}
 	}()
+	fmt.Println(method)
 	if method == common.AlertMethodSms {
 		url := beego.AppConfig.String("SmsUrl")
 		for _, i := range content {
@@ -73,6 +78,7 @@ func SendAll(method string, from string, param map[string]string, content []comm
 		}
 	} else if method == common.AlertMethodLanxin {
 		url := beego.AppConfig.String("LanxinUrl")
+
 		for _, i := range content {
 			msg := []string{"[故障:" + strconv.FormatInt(int64(len(i.Alerts)), 10) + "条] " + i.Alerts[0].Summary}
 			for _, j := range i.Alerts {
@@ -91,6 +97,50 @@ func SendAll(method string, from string, param map[string]string, content []comm
 				To:      i.User,
 			})
 			common.HttpPost(url, param, nil, data)
+		}
+	} else if method == common.AlterMethodEWechat {
+		url := beego.AppConfig.String("WeChat")
+
+
+		for _, i := range content {
+			var sendMsg struct {
+				//"msgtype": "text",
+				Msgtype string `json:"msgtype"`
+				Text    struct {
+					MentionedList []string `json:"mentioned_list"`
+					Content       string   `json:"content"`
+				} `json:"text"`
+			}
+			sendMsg.Msgtype = "text"
+			sendMsg.Text.MentionedList = make([]string, 0)
+
+			for _, eachUser := range i.User {
+				sendMsg.Text.MentionedList = append(sendMsg.Text.MentionedList, eachUser)
+			}
+			msg := []string{"[故障:" + strconv.FormatInt(int64(len(i.Alerts)), 10) + "条] " + i.Alerts[0].Summary}
+			strAmount := 0
+			for _, j := range i.Alerts {
+				duration, _ := time.ParseDuration(strconv.FormatInt(int64(j.Count), 10) + "m")
+
+				id := strconv.FormatInt(j.Id, 10)
+				value := strconv.FormatFloat(j.Value, 'f', 2, 64)
+				strAmount += len("["+duration.String()+"][ID:"+id+"] "+j.Labels["node_name"] + "-"  +j.Labels["service_name"]+" 当前值:"+value)
+				if strAmount * 4 >= 4000 {
+					continue
+				}
+				msg = append(msg, "["+duration.String()+"][ID:"+id+"] "+j.Labels["node_name"] + "-"  +j.Labels["service_name"]+" 当前值:"+value)
+
+
+			}
+			msg = append(msg, "[时间] "+sendTime)
+			msg = append(msg, "[确认链接] "+beego.AppConfig.String("WebUrl")+"/alerts_confirm/"+strconv.FormatInt(i.RuleId, 10)+"?start="+strconv.FormatInt(i.Start, 10))
+			//data, _ := json.Marshal(sendMsg)
+			sendMsg.Text.Content = strings.Join(msg, "\n")
+			jsonStr,_ := json.Marshal(sendMsg)
+			testSend:= string(jsonStr)
+			res, _ := common.HttpPost(url, nil, nil, []byte(testSend))
+			body, _ := ioutil.ReadAll(res.Body)
+			fmt.Println(string(body))
 		}
 	} else {
 		url := beego.AppConfig.String("CallUrl")

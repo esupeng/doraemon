@@ -1,0 +1,21 @@
+2020/09/17 10:48:05.674 [I] [controller.go:218]  admin /api/v1/proms POST {1 test-prom http://182.254.217.71:35073/prometheus/graph}
+2020/09/17 10:48:42.427 [I] [controller.go:218]  admin /api/v1/groups POST {1 test sup}
+2020/09/17 10:48:43.043 [I] [controller.go:218]  admin /api/v1/groups POST {0 test sup}
+2020/09/17 10:49:01.159 [I] [controller.go:218]  admin /api/v1/plans POST {1 test111 test111}
+2020/09/17 10:49:47.273 [I] [controller.go:218]  admin /api/v1/plans/1/receivers POST {1 0xc00049ed80 00:00 23:59 0 1   sup   SMS}
+2020/09/17 10:50:06.803 [I] [controller.go:218]  admin /api/v1/rules POST {rate(mysql_global_status_queries[20min]) 0s > 1 test1231231  1 1}
+2020/09/17 10:51:52.869 [I] [controller.go:218]  admin /api/v1/rules/1 PUT 1
+2020/09/17 14:25:34.454 [I] [controller.go:218]  admin /api/v1/proms/1 PUT {1 test-prom http://182.254.217.71:35073/}
+2020/09/17 14:26:55.456 [I] [controller.go:218]  admin /api/v1/rules/1 PUT 1
+2020/09/17 14:28:03.941 [I] [controller.go:218]  admin /api/v1/users POST {2 sup e10adc3949ba59abbe56e057f20f883e}
+2020/09/17 14:28:55.422 [I] [controller.go:218]  admin /api/v1/rules/1 PUT 1
+2020/09/17 14:34:14.258 [I] [controller.go:218]  admin /api/v1/proms/1 PUT {1 test-prom http://182.254.217.71:35073/prometheus}
+2020/09/17 14:34:59.607 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/a7b5822d-538f-4a86-849b-0ef9d94278f4agent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:00.095 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/7966390e-4598-4be4-b39f-2dd4468caabcagent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:01.194 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/6c97e43d-d14e-47e8-8c8c-9e2847812d67agent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:01.707 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/17582ab4-5b0a-4768-b5cb-ee67430f2702agent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:02.008 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/736635e4-6913-4601-b024-f7d128321506agent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:02.414 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/0f85b6f6-0cfc-4bd0-84ce-13a19db22aa2agent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:03.043 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/5438640d-12dc-4e5d-a4bb-8d1405b0d25dagent_' for key 'ruleid_labels_firedat'
+2020/09/17 14:35:03.297 [E] [alerts.go:401]  Insert alter failed:Error 1062: Duplicate entry '1-agent_id/agent_id/ee60270d-a696-4c27-b707-1767f8b53f42agent_' for key 'ruleid_labels_firedat'
+2020/09/17 15:24:15.992 [I] [controller.go:218]  admin /api/v1/receivers/1 PUT {1 <nil> 00:00 23:59 0 1   sup   WeChat}

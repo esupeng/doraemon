@@ -1,3 +1,3 @@
 window.CONFIG = {
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://172.16.25.208:8080',
 }

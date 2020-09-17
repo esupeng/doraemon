@@ -1,0 +1,3 @@
+2020/09/16 14:20:14.526 [I] [login.go:107]  authenticate fail error: ldap is not initialized
+2020/09/16 14:20:16.163 [I] [login.go:107]  authenticate fail error: ldap is not initialized
+2020/09/16 14:20:16.965 [I] [login.go:107]  authenticate fail error: ldap is not initialized
